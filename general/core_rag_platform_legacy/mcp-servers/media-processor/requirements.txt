@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+
+# Dépendances pour une implémentation réelle
+# openai
+# boto3
