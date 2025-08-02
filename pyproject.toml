@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lean_assistant_rag_project"
+version = "0.1.0"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "python-dotenv",
+    "openai",
+    "sqlalchemy[asyncio]",
+    "psycopg2-binary",
+    "neo4j",
+    "pandas",
+    "unstructured[pdf,xlsx]",
+    "openpyxl",
+    "crawl4ai",
+    "youtube-transcript-api",
+    "gitpython",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
