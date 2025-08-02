@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pydantic
+python-dotenv
+sqlalchemy[asyncio]
+psycopg2-binary
+neo4j
+openai
