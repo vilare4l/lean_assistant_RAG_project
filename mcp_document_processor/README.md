@@ -1,0 +1,115 @@
+# MCP Document Processor: A Foundation for Document Processing MCP Servers
+
+This project serves as a robust template for building your own Model Context Protocol (MCP) servers specialized in document processing. It incorporates best practices for project structure, dependency management, configuration, and containerization, allowing you to quickly develop and deploy custom MCP functionalities for various document types (PDF, DOCX, CSV, XLSX).
+
+## Features
+
+- **Standardized Project Structure**: Clear separation of source code, documentation, and tests.
+- **Dependency Management**: Uses `pyproject.toml` and `uv` for efficient dependency handling.
+- **Environment Configuration**: Securely manage sensitive information with `.env` files.
+- **Containerization**: Ready-to-use `Dockerfile` for easy deployment with Docker.
+- **Extensible MCP Server**: A basic `FastMCP` setup ready for you to add your custom tools and resources for document processing.
+
+## Getting Started
+
+### Prerequisites
+
+- Python 3.12+
+- `uv` (install with `pip install uv` if you don't have it)
+- Docker (recommended for deployment)
+
+### Installation
+
+1.  **Clone this template or copy its contents**:
+    ```bash
+    git clone <your-repo-url> mcp-document-processor
+    cd mcp-document-processor
+    ```
+    (If you copied, ensure you are in your new project directory)
+
+2.  **Install dependencies**:
+    ```bash
+    uv pip install -e .
+    ```
+
+3.  **Create your environment file**:
+    ```bash
+    cp .env.example .env
+    ```
+    Edit the `.env` file to configure your server's transport, host, port, and any other custom variables your MCP might need.
+
+### Running the Server
+
+You can run the MCP server using `uv` directly or via Docker.
+
+#### Using `uv` (for development)
+
+Set `TRANSPORT=sse` in your `.env` file for an HTTP endpoint, or leave it empty for `stdio` (CLI-based) transport.
+
+```bash
+uv run src/main.py
+```
+
+#### Using Docker (recommended for deployment)
+
+1.  **Build the Docker image**:
+    ```bash
+    docker build -t mcp-document-processor .
+    ```
+
+2.  **Run the Docker container**:
+    ```bash
+    docker run --env-file .env -p 8050:8050 mcp-document-processor
+    ```
+    (Adjust the port mapping `-p 8050:8050` if you configured a different `PORT` in your `.env` file).
+
+## Building Your Custom MCP
+
+This template provides a minimal MCP server. To add your own functionalities:
+
+1.  **Define your tools**:
+    Create functions in `src/` (or a new `src/tools/` directory) and decorate them with `@mcp.tool()`.
+    Example:
+    ```python
+    # src/main.py or src/tools/my_tool.py
+    from mcp.server.fastmcp import FastMCP, Context
+
+    # ... (your MCP setup)
+
+    @mcp.tool()
+    async def process_pdf(ctx: Context, file_path: str) -> str:
+        """Processes a PDF document."""
+        # Your PDF processing logic here
+        return f"Processed PDF: {file_path}"
+    ```
+
+2.  **Manage dependencies**:
+    If your tools require external libraries (e.g., for API calls, database interactions), add them to `pyproject.toml` under `dependencies` and run `uv pip install -e .`.
+
+3.  **Implement lifespan functions**:
+    If your MCP needs to initialize resources (like database connections, API clients) once at startup, use the `lifespan` argument in `FastMCP` as shown in `src/main.py`.
+
+4.  **Add resources and prompts**:
+    Use `@mcp.resource()` and `@mcp.prompt()` decorators for more advanced MCP functionalities.
+
+## Project Structure
+
+```
+.
+├── pyproject.toml          # Project metadata and dependencies
+├── .env.example            # Example environment variables
+├── .gitignore              # Files to ignore in version control
+├── Dockerfile              # Docker build instructions
+├── README.md               # Project documentation
+├── LICENSE                 # Project license
+├── src/                    # Source code for the MCP server
+│   ├── main.py             # Main MCP server application
+│   └── utils.py            # Utility functions
+├── docs/                   # Project-specific documentation
+├── tests/                  # Unit and integration tests
+└── tools/                  # Custom MCP tools (optional, for organization)
+```
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.

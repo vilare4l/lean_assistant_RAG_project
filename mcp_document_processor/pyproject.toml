@@ -1,0 +1,18 @@
+[project]
+name = "mcp-document-processor"
+version = "0.1.0"
+description = "MCP server for processing various document types (PDF, DOCX, CSV, XLSX)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "httpx>=0.28.1",
+    "mcp[cli]>=1.3.0",
+    "python-dotenv>=1.0.1",
+    "pypdf",
+    "python-docx",
+    "openpyxl",
+    "pandas",
+    "unstructured[pdf,docx]", # Add unstructured with PDF and DOCX extras
+    "lxml", # Required by pandas.read_html and often by unstructured
+    "pytest", # Added for testing
+]

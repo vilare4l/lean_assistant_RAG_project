@@ -20,8 +20,9 @@ Le développement sera mené de manière itérative et sera piloté par des **PR
 
 **Objectif** : Implémenter les microservices responsables de la collecte et de la transformation des données brutes en `MCPPayload`.
 
-- [X] **PRP pour `mcp_document_processor`** : Traitement des PDF, DOCX, CSV, XLSX.
+- [X] **PRP pour `mcp_document_processor`** : Traitement des PDF, DOCX, CSV, XLSX, JSON.
   - [X] Code formaté avec `black` et vérifié avec `mypy`.
+  - [ ] **Amélioration des fonctionnalités PDF** : Nécessite une amélioration significative pour une extraction plus robuste du texte et des tableaux, et une meilleure gestion des PDF complexes.
 - [ ] **PRP pour `mcp_media_processor`** : Traitement des images et audio (OCR, STT, Vision).
 - [ ] **PRP pour `mcp_web_crawler`** : Crawling de pages web.
 - [ ] **PRP pour `mcp_youtube_processor`** : Extraction de transcriptions YouTube.
