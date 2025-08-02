@@ -14,22 +14,25 @@ Ce document détaille les étapes de développement et les tâches prioritaires 
 
 ### Phase 1: Initialisation et Setup
 
-- [ ] Créer le projet FastAPI de base.
-- [ ] Configurer le `Dockerfile` et `requirements.txt`.
-- [ ] Mettre en place les tests unitaires de base.
+- [X] Créer le projet FastAPI de base.
+- [X] Configurer le `Dockerfile` et `requirements.txt` (inclut l'installation de Poppler).
+- [X] Mettre en place les tests unitaires de base (couverture PDF, DOCX, CSV, XLSX).
+- [X] Code formaté avec `black` et vérifié avec `mypy`.
 
 ### Phase 2: Implémentation du Parsing
 
-- [ ] Développer l'endpoint `/process-document/`.
-- [ ] Intégrer `unstructured` pour PDF et DOCX.
-- [ ] Implémenter la logique de `parser.py` pour router les types de fichiers.
-- [ ] Gérer l'extraction des tableaux via `unstructured` et `pandas`.
-- [ ] Assurer la création du `MCPPayload` complet.
+- [X] Développer l'endpoint `/process-document/`.
+- [X] Intégrer `unstructured` pour PDF et DOCX.
+- [X] Implémenter la logique de `parser.py` pour router les types de fichiers.
+- [X] Gérer l'extraction des tableaux via `unstructured` et `pandas`.
+- [X] Assurer la création du `MCPPayload` complet.
+- [ ] **Améliorer l'extraction structurée des tableaux des PDF** : Actuellement, `unstructured` avec la stratégie `hi_res` détecte les tableaux dans les PDF, mais ne parvient pas toujours à en extraire une représentation HTML structurée. Le texte brut du tableau est alors inclus dans les `content_chunks`. Il est essentiel d'explorer des options pour une extraction plus structurée des tableaux PDF (par exemple, affiner les paramètres d'`unstructured` ou envisager des bibliothèques dédiées comme `Camelot` ou `Tabula-py`).
+- [ ] **Détection et référencement des images/schémas dans les PDF** : Extraire les images et schémas intégrés dans les PDF et les référencer dans le `MCPPayload` pour un traitement ultérieur par le `mcp_media_processor`.
 
 ### Phase 3: Streaming et Intégration
 
-- [ ] Mettre en place le streaming SSE pour l'envoi du `MCPPayload`.
-- [ ] Simuler l'envoi vers le `mcp_vector_processor` et le `mcp_graph_enricher` (pour les tests).
+- [X] Mettre en place le streaming SSE pour l'envoi du `MCPPayload`.
+- [X] La distribution du `MCPPayload` vers d'autres MCPs est gérée par un orchestrateur externe (ex: n8n), donc aucune simulation d'envoi direct n'est requise pour ce MCP.
 
 ## 3. Dépendances
 

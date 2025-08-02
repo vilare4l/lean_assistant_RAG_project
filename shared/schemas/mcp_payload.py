@@ -57,6 +57,31 @@ class TabularData(BaseModel):
         description="Liste des lignes de données, chaque ligne étant un dictionnaire."
     )
 
+class MediaReference(BaseModel):
+    """
+    Représente une référence à un média (image, schéma, etc.) extrait d'un document.
+    """
+    media_id: str = Field(
+        ...,
+        description="Identifiant unique du média extrait (ex: nom de fichier, hash)."
+    )
+    media_type: Literal['image', 'diagram', 'chart', 'other'] = Field(
+        'image',
+        description="Type du média extrait."
+    )
+    file_path: str = Field(
+        ...,
+        description="Chemin relatif ou absolu vers le fichier du média extrait."
+    )
+    metadata: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Métadonnées additionnelles sur le média (ex: légende, description OCR)."
+    )
+
+    @validator('metadata', pre=True, always=True)
+    def ensure_metadata_is_dict(cls, v):
+        return v or {}
+
 class MCPPayload(BaseModel):
     """
     Le format de payload standardisé que chaque serveur MCP doit retourner.
@@ -74,7 +99,11 @@ class MCPPayload(BaseModel):
         default_factory=list,
         description="Liste des ensembles de données tabulaires."
     )
+    extracted_media_references: List[MediaReference] = Field(
+        default_factory=list,
+        description="Liste des références aux médias (images, schémas) extraits du document."
+    )
 
-    @validator('content_chunks', 'tabular_data', pre=True, always=True)
+    @validator('content_chunks', 'tabular_data', 'extracted_media_references', pre=True, always=True)
     def ensure_lists_are_not_none(cls, v):
         return v or []

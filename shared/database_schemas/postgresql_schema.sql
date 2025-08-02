@@ -28,6 +28,20 @@ CREATE TABLE IF NOT EXISTS tabular_data (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Table to store references to extracted media (images, diagrams, etc.)
+CREATE TABLE IF NOT EXISTS extracted_media (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    source_id VARCHAR(255) NOT NULL, -- Link to the original document source
+    media_id VARCHAR(255) NOT NULL,  -- Unique identifier for the extracted media
+    media_type VARCHAR(50) NOT NULL, -- Type of media (e.g., 'image', 'diagram', 'chart')
+    file_path TEXT NOT NULL,         -- Path or URL to the stored media file
+    metadata JSONB DEFAULT '{}',     -- Additional metadata (e.g., OCR text, description)
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Optional: Index on source_id for faster lookup of all media from a specific source
+CREATE INDEX IF NOT EXISTS idx_extracted_media_source_id ON extracted_media (source_id);
+
 -- Optional: Index on source_id for faster lookup of all data from a specific source
 CREATE INDEX IF NOT EXISTS idx_documents_source_id ON documents (source_id);
 CREATE INDEX IF NOT EXISTS idx_tabular_data_source_id ON tabular_data (source_id);

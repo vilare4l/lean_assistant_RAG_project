@@ -15,10 +15,16 @@ CREATE CONSTRAINT IF NOT EXISTS FOR (c:Chunk) REQUIRE c.id IS UNIQUE;
 CREATE CONSTRAINT IF NOT EXISTS FOR (e:Entity) REQUIRE e.name IS UNIQUE;
 // Properties: name, type (e.g., 'Person', 'Organization', 'Product', 'Concept'), description, etc.
 
-// 4. Relationship Types (Examples):
+// 4. Media Node: Represents an extracted media (image, diagram, etc.)
+CREATE CONSTRAINT IF NOT EXISTS FOR (m:Media) REQUIRE m.id IS UNIQUE;
+// Properties: id (from MediaReference.media_id), type (e.g., 'image', 'diagram', 'chart'), file_path, metadata (JSONB of original media metadata)
+
+// 5. Relationship Types (Examples):
 
 // (Source)-[:CONTAINS_CHUNK]->(Chunk)
+// (Source)-[:CONTAINS_MEDIA]->(Media)
 // (Chunk)-[:MENTIONS]->(Entity)
+// (Media)-[:DESCRIBES]->(Entity) // Optional: if media content is analyzed and describes an entity
 // (Entity)-[:RELATED_TO]->(Entity)
 // (Person)-[:WORKS_AT]->(Organization)
 // (Concept)-[:DEFINED_IN]->(Source)
